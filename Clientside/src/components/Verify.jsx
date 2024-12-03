@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './verify.css'; // Import the CSS file
+import './verify.css'; 
+import axios from "axios"
 
 const Verify = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
-    // Implement verification logic here
-    console.log('Email:', email);
-    navigate('/Register'); // Navigate to a success page after verification
+    try {
+      console.log('Email:', email);
+      const res = await axios.post("http://localhost:3004/api/verify", { email });
+      console.log(res);
+  
+      if (res.status == 201) {
+        alert(res.data.msg);
+        localStorage.setItem("email", email);
+  
+       
+      }
+    } catch (error) {
+      console.error("Error verifying email:", error);
+    }
   };
+  
 
   return (
     <div className="verify-container">

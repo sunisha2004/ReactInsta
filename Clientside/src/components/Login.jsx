@@ -1,18 +1,40 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import axios from 'axios';
 
 const Login = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    password: '',
+    email:''
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
     // Implement login logic here
-    console.log('Name:', name, 'Email:', email, 'Password:', password);
-    navigate('/');
+try {
+  console.log(formData);
+  
+  const res=await axios.post("http://localhost:3004/api/login",formData)
+
+  if (res.status==201) {
+    // console.log(res);
+    // console.log(formData);
+    console.log(res.data.token);
+    alert("login success")
+    navigate("/")
+    
+    
+  }
+} catch (error) {
+  
+}    
+    // navigate('/');
   };
 
   const handleForgotPassword = () => {
@@ -27,24 +49,15 @@ const Login = () => {
     <div className="login-container">
       <form className="login-form" onSubmit={handleLogin}>
         <h2 className="login-title">Sign In</h2>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            required
-          />
-        </div>
+      
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          name='email'
+            value={formData.email}
+            onChange= {handleChange}
             placeholder="Enter your email"
             required
           />
@@ -54,8 +67,9 @@ const Login = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+            value={formData.password}
+            onChange= {handleChange}
             placeholder="Enter your password"
             required
           />

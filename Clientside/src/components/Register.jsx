@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './register.css'; // Import the CSS file
-
+import './register.css';
+import axios from "axios";
+import { Navigate, useNavigate } from 'react-router-dom';
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate();
+  const navigate=useNavigate()
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmpassword: '',
+    email:''
+  });
+formData.email=localStorage.getItem("email")
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+    const { username, password, confirmpassword } = formData;
+
+    // Check for password confirmation match
+    if (password !== confirmpassword) {
+      alert("Passwords do not match!");
       return;
     }
-    // Implement registration logic here
-    console.log('Username:', username, 'Password:', password);
-    navigate('/Login'); // Navigate to dashboard after successful signup
+
+    try {
+      console.log(formData);
+      
+      const res = await axios.post("http://localhost:3004/api/adduser", formData);
+      navigate("/login")
+
+      console.log("Registration successful:");
+    } catch (error) {
+      console.error("Registration error:");
+    }
   };
 
   return (
@@ -28,8 +47,9 @@ const Register = () => {
           <input
             type="text"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
             placeholder="Enter your username"
             required
           />
@@ -39,8 +59,9 @@ const Register = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Enter your password"
             required
           />
@@ -50,8 +71,9 @@ const Register = () => {
           <input
             type="password"
             id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            name="confirmpassword"
+            value={formData.confirmpassword}
+            onChange={handleChange}
             placeholder="Confirm your password"
             required
           />
@@ -65,3 +87,4 @@ const Register = () => {
 };
 
 export default Register;
+
