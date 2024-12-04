@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  gap: 10px;
 }
 
 .navbar-name {
@@ -60,4 +61,13 @@
 
 .dropdown-item:hover {
   background-color: #f0f0f0;
+}
+
+.loginbt{
+  width:60px ;
+  height: 30px;
+  background-color: #4db1b1;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }

@@ -14,6 +14,10 @@ const Nav = () => {
     navigate('/profile')
   }
 
+  const handlelogin=()=>{
+    navigate('/login')
+  }
+
 
   return (
     <nav className="navbar">
@@ -35,9 +39,12 @@ const Nav = () => {
             <button className="dropdown-item" >
               Logout
             </button>
+            
           </div>
         )}
+        <div><button className='loginbt' onClick={handlelogin}>login</button></div>
       </div>
+     
     </nav>
   );
 };

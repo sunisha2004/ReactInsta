@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleLogin = async(e) => {
     e.preventDefault();
-    // Implement login logic here
+    
 try {
   console.log(formData);
   
@@ -26,6 +26,7 @@ try {
     // console.log(res);
     // console.log(formData);
     console.log(res.data.token);
+    localStorage.setItem("token",res.data.token)
     alert("login success")
     navigate("/")
     
