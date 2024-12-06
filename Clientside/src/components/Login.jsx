@@ -33,6 +33,8 @@ try {
     
   }
 } catch (error) {
+
+  alert("password or email does not match")
   
 }    
     // navigate('/');

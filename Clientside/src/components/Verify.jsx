@@ -21,7 +21,9 @@ const Verify = () => {
        
       }
     } catch (error) {
-      console.error("Error verifying email:", error);
+     
+      alert("Email Already Exist")
+      navigate('/Login')
     }
   };
   

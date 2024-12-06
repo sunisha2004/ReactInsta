@@ -6,22 +6,27 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Nav from './components/Nav';
 import Profile from './components/profile'
+import AddData from './components/AddData';
+import { useState } from 'react';
 
 
 function App() {
- 
+ const [user,setUser]=useState("");
+console.log("app"+user);
 
   return (
     <>
     <Router>
-      <Nav/>
+   {user&&   <Nav user={user}/>}
       <Routes>
-    <Route path="/" element={<Home/>}></Route>
+    <Route path="/" element={<Home setUser={setUser}/>}></Route>
 
       <Route path="/Verify" element={<Verify/>}></Route>
       <Route path="/Register" element={<Register/>}></Route>
       <Route path="/Login" element={<Login/>}></Route>
       <Route path="/profile" element={<Profile/>}></Route>
+      <Route path="/addData" element={<AddData/>}></Route>
+
 
       
 

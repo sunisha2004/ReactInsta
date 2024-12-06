@@ -1,4 +1,5 @@
 import userSchema from "./model/user.js"
+import profileSchema from "./model/profile-model.js"
 import nodemailer from 'nodemailer'
 import bcrypt from 'bcrypt'
 import pkg from 'jsonwebtoken'
@@ -103,6 +104,9 @@ export async function login(req, res) {
     }
 }
 
+
+
+
 export async function display(req, res) {
     // console.log(req.user);
     const usr=await userSchema.findOne({_id:req.user.UserID})
@@ -113,6 +117,41 @@ export async function display(req, res) {
 }
 
 
+export async function profile(req, res) {
+  // console.log(req.user.UserID);
+  
+  const usr = await userSchema.findOne({ _id: req.user.UserID })
+  // console.log(usr);
+  
+  const data = await profileSchema.findOne({ userId: req.user.UserID })
+  if (!data) res.status(200).send({ usr })
+  else {
+    res.status(200).send({ usr, data })
+  }
+}
+
+export async function addUserData(req, res) {
+  try {
+    const { name, dob, note } = req.body
+  await profileSchema.create({userId:req.user.UserID,name,dob,note})
+    res.status(200).send({ message: "Data added successfully!" })
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: "Failed to add data. Please try again." })
+  }
+}
+
+
+export async function editUserData(req, res) {
+  try {
+    const { name, dob, note } = req.body
+    const updatedData = await profileSchema.updateOne({ userId: req.user.UserID },{ $set: { name, dob, note } },)
+    res.status(200).send({ message: "Data updated successfully!", data: updatedData })
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: "Failed to update data. Please try again." })
+  }
+} 
 
 
 
