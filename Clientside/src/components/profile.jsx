@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "./profile.css"
+import './profile.css'
 
 
 const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-
+  const [posts, setPosts] = useState([]);
+  const token = localStorage.getItem("token");
   const getUser = async () => {
-    const token = localStorage.getItem("token");
     if (!token) {
       navigate("/Login");
     } else {
@@ -36,52 +36,111 @@ const Profile = () => {
     getUser();
   }, []);
 
+  
+  const getPosts = async () => {
+    try {
+      const res = await axios.get("http://localhost:3004/api/getPosts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.status === 200) {
+        setPosts(res.data.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+    getPosts();
+  }, []);
+
+  const DeleteUser=async(e)=>{
+    e.preventDefault()
+    if(!token){
+      navigate("/Login")
+    }
+    else{
+      try{
+        const res= await axios.delete("http://localhost:3004/api/deleteUser",{
+          headers: { Authorization: `Bearer ${token}`},
+        })
+        if(res.status === 200){
+          alert(res.data.msg)
+          localStorage.removeItem("token")
+          navigate('/Login')
+          location.reload()
+        }
+        else{
+          navigate('/Login')
+        }
+      }
+      catch(error){
+        console.error(error);
+        location.reload()
+        navigate("/Login")
+        
+      }
+    }
+
+  }
+
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        {/* User Details */}
-        <div className="profile-header">
-          <div className="profile-image">
-            <img
-              src={userDetails?.profile || "/default-profile.png"}
-              alt="Profile"
-            />
+    <div className="container">
+      <div className="left-side">
+        <form>
+          <div className="form-group">
+            <div className="image">
+              <img
+                src={userDetails?.profile || "/default-profile.png"}
+                alt="Profile"
+              />
+            </div>
+            <div>Username: {userDetails?.username}</div>
+            <div>Email: {userDetails?.email}</div>
           </div>
-          <h2>{userDetails?.username || "Guest"}</h2>
-          <p className="email">{userDetails?.email}</p>
-        </div>
-
-        {/* User Data */}
-        <div className="profile-body">
-          {userData ? (
-            <div className="user-details">
-              <p>
-                <strong>Nickname:</strong> {userData.nickname}
-              </p>
-              <p>
-                <strong>Date of Birth:</strong> {userData.dob}
-              </p>
-              <p>
-                <strong>Note:</strong> {userData.note}
-              </p>
-              <Link to={"/editUserData"} className="btn btn-primary">
-                Edit Profile
-              </Link>
+        </form>
+        {userData ? (
+          <>
+            <div>
+              <div>Name: {userData.name}</div>
+              <div>Date of Birth: {userData.dob}</div>
+              <div>Note: {userData.note}</div>
             </div>
-          ) : (
-            <div className="user-details">
-              <p>No additional information found.</p>
-              <Link to={"/addData"} className="btn btn-secondary">
-                Create Profile
-              </Link>
+            <Link to={"/EditData"}>
+              <button>Edit Profile</button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <div>Note: Not added, need to create !</div>
+            <Link to={"/addData"}>
+              <button>Create Profile</button>
+            </Link>
+          </>
+        )}
+        <button onClick={DeleteUser}>Delete Profile</button>
+      </div>
+      <div className="right-side">
+        <Link to={"/addpost"}>
+          <button>Add Post</button>
+        </Link>
+        {posts.length === 0 ? (
+          <div>No post added</div>
+        ) : (
+          posts.map((post, index) => (
+            <div key={index}>
+              <Link to={`/viewUserPost/${post._id}`}><img
+                src={post.images[0]}
+                alt="Post"
+                className="post-image"
+              /> </Link>
+              
+                {/* <button>View</button> */}
+             
             </div>
-          )}
-        </div>
-
-        {/* Footer Actions */}
-        <div className="profile-footer">
-          <button className="btn btn-danger">Delete Profile</button>
-        </div>
+          ))
+        )}
       </div>
     </div>
   );

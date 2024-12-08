@@ -16,6 +16,8 @@ const Verify = () => {
   
       if (res.status == 201) {
         alert(res.data.msg);
+        console.log(email);
+        
         localStorage.setItem("email", email);
   
        

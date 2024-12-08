@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Nav.css';
 
-const Nav = ({user}) => {
+const Nav = ({user,pic}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -33,11 +33,7 @@ const Nav = ({user}) => {
       <div className="navbar-profile">
         <span className="navbar-name">{user}</span>
         <div className="navbar-image" onClick={handleDropdownToggle}>
-          <img
-            src="https://via.placeholder.com/40"
-            alt="Profile"
-            className="profile-img"
-          />
+        <img src={pic} alt="Profile" className="profile-img" />
         </div>
         {dropdownVisible && (
           <div className="dropdown-menu">

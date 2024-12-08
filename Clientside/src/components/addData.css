@@ -22,7 +22,7 @@
   .add-data-title {
     font-size: 24px;
     font-weight: bold;
-    color: #333333;
+    color: #006666;;
     margin-bottom: 20px;
   }
   
@@ -55,7 +55,7 @@
   }
   
   .form-input:focus {
-    border-color: #007bff;
+    border-color: #9cd7d7;;
   }
   
   textarea.form-input {
@@ -67,7 +67,7 @@
     font-size: 16px;
     font-weight: bold;
     color: #ffffff;
-    background-color: #007bff;
+    background-color: #006666;;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -75,6 +75,6 @@
   }
   
   .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: #006666;;
   }
   

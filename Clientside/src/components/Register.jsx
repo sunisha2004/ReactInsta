@@ -8,12 +8,26 @@ const Register = () => {
     username: '',
     password: '',
     confirmpassword: '',
-    email:''
+    pic:'',
+    email:localStorage.getItem('email') || "",
   });
+  const [previewImage, setPreviewImage] = useState(null);
 formData.email=localStorage.getItem("email")
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, pic: reader.result }); // Save Base64 string
+        setPreviewImage(reader.result); // Set preview image
+      };
+      reader.readAsDataURL(file); // Convert to Base64
+    }
   };
 
   const handleRegister = async (e) => {
@@ -30,9 +44,17 @@ formData.email=localStorage.getItem("email")
       console.log(formData);
       
       const res = await axios.post("http://localhost:3004/api/adduser", formData);
-      navigate("/login")
 
-      console.log("Registration successful:");
+      if(res.status==201){
+        alert(res.data.msg)
+        localStorage.removeItem('email')
+      navigate("/Login")
+      }
+      else{
+        alert(res.data.msg)
+      }
+
+      // console.log("Registration successful:");
     } catch (error) {
       console.error("Registration error:");
     }
@@ -42,6 +64,18 @@ formData.email=localStorage.getItem("email")
     <div className="register-container">
       <form className="register-form" onSubmit={handleRegister}>
         <h2 className="register-title">Create an Account</h2>
+        <br />
+        <div className="form-group">
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Profile Preview"
+                style={{ marginTop: "10px", width: "100px", height: "100px", borderRadius: "50%" }}
+              />
+            )}
+            <label>Profile Picture</label>
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+          </div>
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input

@@ -1,0 +1,78 @@
+/* General Container */
+.view-post {
+    font-family: 'Arial', sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
+  }
+  
+  /* Header */
+  .post-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .post-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  /* Post Content Section */
+  .post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Images Section */
+  .images-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .post-image {
+    max-width: 250px;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Info Section */
+  .info-section {
+    text-align: center;
+  }
+  
+  .caption {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .meta-data p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Loading State */
+  .loading {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 50px;
+    color: #555;
+  }
+  
